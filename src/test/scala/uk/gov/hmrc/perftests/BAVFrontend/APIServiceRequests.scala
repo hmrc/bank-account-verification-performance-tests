@@ -9,7 +9,7 @@ object APIServiceRequests extends ServicesConfiguration {
 
   private val apiContextRoot = "/api"
   private val initialConfiguration = "{}"
-  private val bankAccountVerificationAPI: String = baseUrlFor("bank-account-verification-frontend") + apiContextRoot
+  private val bankAccountVerificationAPI: String = baseUrlFor("bank-account-verification-frontend-api") + apiContextRoot
 
   val initializeJourneyPage: HttpRequestBuilder = {
     http("Initialise journey")
