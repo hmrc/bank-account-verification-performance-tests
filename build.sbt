@@ -1,27 +1,25 @@
-name := "bank-account-verification-performance-tests"
-
-organization := "uk.gov.hmrc"
-
-scalaVersion := "2.12.12"
-
-version := "0.1.0"
-
-resolvers ++= Seq(
-  Resolver.bintrayRepo("hmrc", "releases"),
-  "typesafe-releases" at "https://nexus-preview.tax.service.gov.uk/content/repositories/typesafe-releases/"
-)
-
-libraryDependencies ++= Seq(
-  "com.typesafe" % "config" % "1.4.0" % "test,it",
-  "uk.gov.hmrc" %% "performance-test-runner" % "3.5.0" % "test,it",
-  "io.gatling" % "gatling-test-framework" % "2.3.1" % "test,it",
-  "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.3.1" % "test,it"
-)
-
-scalacOptions := Seq(
-  "-encoding", "UTF-8", "-target:jvm-1.8", "-deprecation",
-  "-feature", "-unchecked", "-language:_",
-  "-Xlint", "-Xmax-classfile-name", "100"
-)
-
-enablePlugins(GatlingPlugin)
+lazy val root = (project in file("."))
+  .enablePlugins(GatlingPlugin)
+  .enablePlugins(CorePlugin)
+  .enablePlugins(JvmPlugin)
+  .enablePlugins(IvyPlugin)
+  .enablePlugins(SbtAutoBuildPlugin)
+  .settings(
+    organization := "uk.gov.hmrc",
+    name := "bank-account-verification-performance-tests",
+    version := "0.1.0",
+    scalaVersion := "2.12.12",
+    scalacOptions ++= Seq("-feature", "-language:implicitConversions", "-language:postfixOps"),
+    retrieveManaged := true,
+    initialCommands in console := "import uk.gov.hmrc._",
+    parallelExecution in Test := false,
+    publishArtifact in Test := true,
+    libraryDependencies ++= Dependencies.test,
+    // Enabling sbt-auto-build plugin provides DefaultBuildSettings with default `testOptions` from `sbt-settings` plugin.
+    // These testOptions are not compatible with `sbt gatling:test`. So we have to override testOptions here.
+    testOptions in Test := Seq.empty,
+    resolvers ++= Seq(
+      Resolver.bintrayRepo("hmrc", "releases"),
+      Resolver.typesafeRepo("releases")
+    )
+  )
