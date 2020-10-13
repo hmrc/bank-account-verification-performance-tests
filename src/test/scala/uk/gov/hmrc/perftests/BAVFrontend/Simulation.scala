@@ -10,6 +10,7 @@ class Simulation extends PerformanceTestRunner {
   setup("bank-account-verification-frontend", "Standard account entry flows") withRequests(
     initializeJourneyPage,
     startJourney,
+    selectAccountType,
     verifyAccountDetails,
     getCompletedJourneyData
   )

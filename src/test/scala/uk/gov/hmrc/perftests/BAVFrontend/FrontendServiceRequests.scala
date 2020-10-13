@@ -17,6 +17,15 @@ object FrontendServiceRequests extends ServicesConfiguration {
       .check(status.is(200))
   }
 
+  val selectAccountType: HttpRequestBuilder = {
+    http("Select bank account type")
+      .post(s"$bankAccountVerificationURL/start/$${journeyId}")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("accountType", "personal")
+      .formParam("continue", "")
+      .check(status.is(303))
+  }
+
   val verifyAccountDetails: HttpRequestBuilder = {
     http("Submit bank account details")
       .post(s"$bankAccountVerificationURL/verify/$${journeyId}")
