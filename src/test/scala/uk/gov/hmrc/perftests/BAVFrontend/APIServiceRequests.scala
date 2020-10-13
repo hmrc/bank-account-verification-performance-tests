@@ -8,7 +8,7 @@ import uk.gov.hmrc.performance.conf.ServicesConfiguration
 object APIServiceRequests extends ServicesConfiguration {
 
   private val apiContextRoot = "/api"
-  private val initialConfiguration = "{}"
+  private val initialConfiguration = "{\"serviceIdentifier\": \"bavf-performance-test\",  \"continueUrl\": \"https://www.staging.tax.service.gov.uk/bank-account-verification-example-frontend/done\"}"
   private val bankAccountVerificationAPI: String = baseUrlFor("bank-account-verification-frontend-api") + apiContextRoot
 
   val initializeJourneyPage: HttpRequestBuilder = {
