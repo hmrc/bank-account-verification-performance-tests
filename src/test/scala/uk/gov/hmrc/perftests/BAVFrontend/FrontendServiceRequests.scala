@@ -23,6 +23,7 @@ object FrontendServiceRequests extends ServicesConfiguration {
       .formParam("csrfToken", "${csrfToken}")
       .formParam("accountType", "personal")
       .formParam("continue", "")
+      .check(css("input[name=csrfToken]", "value").saveAs("csrfToken"))
       .check(status.is(303))
   }
 
