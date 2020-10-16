@@ -10,7 +10,7 @@ class Simulation extends PerformanceTestRunner {
   setup("bank-account-verification-frontend-personal", "Personal account entry flows") withRequests(
     initializeJourneyPage,
     startJourney,
-    selectAccountType,
+    selectPersonalAccountType,
     verifyPersonalAccountDetails,
     getCompletedJourneyData
   )
@@ -18,7 +18,7 @@ class Simulation extends PerformanceTestRunner {
   setup("bank-account-verification-frontend-business", "Business account entry flows") withRequests(
     initializeJourneyPage,
     startJourney,
-    selectAccountType,
+    selectBusinessAccountType,
     verifyBusinessAccountDetails,
     getCompletedJourneyData
   )

@@ -1,4 +1,4 @@
-accountName,sortCode,accountNumber,rollNumber
-Patrick O'Conner,40-47-84,70872490,
-Patricia Walton-Smith,40 47 84,13537846,
-Paddy O'Brian,07-00-93,33333334,NW/1356
+accountName,sortCode,accountNumber,rollNumber,confirm
+Patrick O'Conner,40-47-84,70872490,,false
+Patricia Walton-Smith,40 47 84,13537846,,false
+Paddy O'Brian,07-00-93,33333334,NW/1356,false
