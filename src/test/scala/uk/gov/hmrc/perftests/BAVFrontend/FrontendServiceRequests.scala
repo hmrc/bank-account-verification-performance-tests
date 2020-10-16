@@ -23,13 +23,17 @@ object FrontendServiceRequests extends ServicesConfiguration {
       .formParam("csrfToken", "${csrfToken}")
       .formParam("accountType", "personal")
       .formParam("continue", "")
-      .check(css("input[name=csrfToken]", "value").saveAs("csrfToken"))
       .check(status.is(303))
   }
 
-  val verifyAccountDetails: HttpRequestBuilder = {
-    http("Submit bank account details")
-      .post(s"$bankAccountVerificationURL/verify/$${journeyId}")
+  val verifyPersonalAccountDetails: HttpRequestBuilder = {
+    http("Load personal account details screen")
+      .get(s"$bankAccountVerificationURL/verify/personal/$${journeyId}")
+      .check(css("input[name=csrfToken]", "value").saveAs("csrfToken"))
+      .check(status.is(200))
+
+    http("Submit personal bank account details")
+      .post(s"$bankAccountVerificationURL/verify/personal/$${journeyId}")
       .formParam("csrfToken", "${csrfToken}")
       .formParam("accountName", "${accountName}")
       .formParam("sortCode", "${sortCode}")
@@ -37,8 +41,24 @@ object FrontendServiceRequests extends ServicesConfiguration {
       .formParam("rollNumber", "${rollNumber}")
       .formParam("continue", "")
       .check(status.is(303))
-    //TODO add in when we have an expected location
-    //.check(header("Location").is(s"$expectedLocation": String))
+  }
+
+  val verifyBusinessAccountDetails: HttpRequestBuilder = {
+    http("Load business account details screen")
+      .get(s"$bankAccountVerificationURL/verify/business/$${journeyId}")
+      .check(css("input[name=csrfToken]", "value").saveAs("csrfToken"))
+      .check(status.is(200))
+
+    http("Submit business bank account details")
+      .post(s"$bankAccountVerificationURL/verify/business/$${journeyId}")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("companyName", "${companyName}")
+      .formParam("companyRegistrationNumber", "${companyRegistrationNumber}")
+      .formParam("sortCode", "${sortCode}")
+      .formParam("accountNumber", "${accountNumber}")
+      .formParam("rollNumber", "${rollNumber}")
+      .formParam("continue", "")
+      .check(status.is(303))
   }
 
 }
