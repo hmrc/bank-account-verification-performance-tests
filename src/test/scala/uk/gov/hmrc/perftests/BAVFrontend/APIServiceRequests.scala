@@ -4,20 +4,20 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
+import uk.gov.hmrc.perftests.models.InitRequest
 
 object APIServiceRequests extends ServicesConfiguration {
 
   private val apiContextRoot = "/api"
-  private val initialConfiguration = "{\"serviceIdentifier\": \"bavf-performance-test\",  \"continueUrl\": \"https://www.staging.tax.service.gov.uk/bank-account-verification-example-frontend/done\"}"
   private val bankAccountVerificationAPI: String = baseUrlFor("bank-account-verification-frontend-api") + apiContextRoot
 
   val initializeJourneyPage: HttpRequestBuilder = {
     http("Initialise journey")
       .post(s"$bankAccountVerificationAPI/init")
       .header("Content-Type", "application/json")
-      .body(StringBody(initialConfiguration))
+      .body(StringBody(InitRequest().asJsonString()))
       .check(status is 200)
-      .check(jsonPath("$").saveAs("journeyId"))
+      .check(jsonPath("$.journeyId").saveAs("journeyId"))
   }
 
   val getCompletedJourneyData: HttpRequestBuilder = {
