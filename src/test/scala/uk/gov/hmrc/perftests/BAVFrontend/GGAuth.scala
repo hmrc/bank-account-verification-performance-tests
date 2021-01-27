@@ -60,10 +60,10 @@ object GGAuth extends ServicesConfiguration {
       .formParam("authorityId", "${credId}")
       .formParam("redirectionUrl", s"$bankAccountVerificationURL/start/$${journeyId}")
       .formParam("credentialStrength", s"${CredentialStrength.Weak.name}")
-      .formParam("affinityGroup", s"${AffinityGroup.Individual}")
       .formParam("confidenceLevel", s"${ConfidenceLevel.L50.level}")
-      .formParam("credentialRole", s"${CredentialRole.User}")
-      .formParam("email", "user@example.com")
+      .formParam("affinityGroup", s"${AffinityGroup.Individual}")
+//      .formParam("credentialRole", s"${CredentialRole.User}")
+//      .formParam("email", "user@example.com")
       .check(status.is(303))
   }
 }
