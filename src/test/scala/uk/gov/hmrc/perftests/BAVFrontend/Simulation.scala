@@ -16,30 +16,38 @@
 
 package uk.gov.hmrc.perftests.BAVFrontend
 
+import io.gatling.core.Predef.{feed, _}
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 import uk.gov.hmrc.perftests.BAVFrontend.APIServiceRequests._
 import uk.gov.hmrc.perftests.BAVFrontend.FrontendServiceRequests._
-import uk.gov.hmrc.perftests.BAVFrontend.GGAuth.authWithGovernmentGateway
+import uk.gov.hmrc.perftests.BAVFrontend.GGAuth.{apiAuthWithGovernmentGateway, frontendAuthWithGovernmentGateway}
+import uk.gov.hmrc.perftests.feeders.CustomFeeders
 
 class Simulation extends PerformanceTestRunner {
 
-  setup("bank-account-verification-frontend-personal", "Personal account entry flows") withRequests(
-    authWithGovernmentGateway,
-    initializeJourneyPage,
-    startJourney,
-    selectPersonalAccountType,
-    verifyPersonalAccountDetails,
-    getCompletedJourneyData
-  )
+  setup("bank-account-verification-frontend-personal", "Personal account entry flows")
+    .withActions(feed(CustomFeeders.credId).actionBuilders: _*)
+    .withRequests(
+      apiAuthWithGovernmentGateway,
+      initializeJourneyPage,
+      frontendAuthWithGovernmentGateway,
+      startJourney,
+      selectPersonalAccountType,
+      verifyPersonalAccountDetails,
+      getCompletedJourneyData
+    )
 
-  setup("bank-account-verification-frontend-business", "Business account entry flows") withRequests(
-    authWithGovernmentGateway,
-    initializeJourneyPage,
-    startJourney,
-    selectBusinessAccountType,
-    verifyBusinessAccountDetails,
-    getCompletedJourneyData
-  )
+  setup("bank-account-verification-frontend-business", "Business account entry flows")
+    .withActions(feed(CustomFeeders.credId).actionBuilders: _*)
+    .withRequests(
+      apiAuthWithGovernmentGateway,
+      initializeJourneyPage,
+      frontendAuthWithGovernmentGateway,
+      startJourney,
+      selectBusinessAccountType,
+      verifyBusinessAccountDetails,
+      getCompletedJourneyData
+    )
 
   runSimulation()
 }

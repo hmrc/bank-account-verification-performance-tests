@@ -25,18 +25,19 @@ import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.perftests.models.AuthRequest
 import uk.gov.hmrc.perftests.models.auth._
 
-import java.util.UUID.randomUUID
-
 object GGAuth extends ServicesConfiguration {
-  private val authLoginUrl: String = baseUrlFor("auth-login-api") + "/government-gateway/session/login"
+  private val webContextRoot: String = "/bank-account-verification"
+  private val bankAccountVerificationURL: String = baseUrlFor("bank-account-verification-frontend") + webContextRoot
+  private val authAPILoginUrl: String = baseUrlFor("auth-login-api") + "/government-gateway/session/login"
+  private val authStubUrl: String = baseUrlFor("auth-login-stub") + "/auth-login-stub/gg-sign-in"
 
   def saveBearerToken: CheckBuilder[HttpCheck, Response, Response, String] = {
-    header("Authorization").saveAs("bearerToken")
+    header("Authorization").saveAs("authToken")
   }
 
   def body: String = {
     AuthRequest(
-      randomUUID().toString.slice(0, 29),
+      "${credId}",
       AffinityGroup.Individual,
       Some(ConfidenceLevel.L50),
       CredentialStrength.Weak,
@@ -45,10 +46,24 @@ object GGAuth extends ServicesConfiguration {
     ).asJsonString()
   }
 
-  val authWithGovernmentGateway: HttpRequestBuilder = http("gg auth call")
-    .post(authLoginUrl)
-    .header("Content-Type", "application/json")
-    .body(StringBody(body))
-    .check(status.is(201))
-    .check(saveBearerToken)
+  val apiAuthWithGovernmentGateway: HttpRequestBuilder =
+    http("API auth with Government Gateway")
+      .post(authAPILoginUrl)
+      .header("Content-Type", "application/json")
+      .body(StringBody(body))
+      .check(status.is(201))
+      .check(saveBearerToken)
+
+  val frontendAuthWithGovernmentGateway: HttpRequestBuilder = {
+    http("Website auth with Government Gateway")
+      .post(authStubUrl)
+      .formParam("authorityId", "${credId}")
+      .formParam("redirectionUrl", s"$bankAccountVerificationURL/start/$${journeyId}")
+      .formParam("credentialStrength", s"${CredentialStrength.Weak.name}")
+      .formParam("affinityGroup", s"${AffinityGroup.Individual}")
+      .formParam("confidenceLevel", s"${ConfidenceLevel.L50.level}")
+      .formParam("credentialRole", s"${CredentialRole.User}")
+      .formParam("email", "user@example.com")
+      .check(status.is(303))
+  }
 }
