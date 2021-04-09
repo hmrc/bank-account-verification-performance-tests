@@ -62,8 +62,6 @@ object GGAuth extends ServicesConfiguration {
       .formParam("credentialStrength", s"${CredentialStrength.Weak.name}")
       .formParam("confidenceLevel", s"${ConfidenceLevel.L50.level}")
       .formParam("affinityGroup", s"${AffinityGroup.Individual}")
-//      .formParam("credentialRole", s"${CredentialRole.User}")
-//      .formParam("email", "user@example.com")
       .check(status.is(303))
   }
 }
