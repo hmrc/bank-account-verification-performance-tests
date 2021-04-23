@@ -30,8 +30,8 @@ object APIServiceRequests extends ServicesConfiguration {
   val initializeJourneyPage: HttpRequestBuilder = {
     http("Initialise journey")
       .post(s"$bankAccountVerificationAPI/init")
-      .header("Authorization", "${authToken}")
-      .header("Content-Type", "application/json")
+      .header(HttpHeaderNames.Authorization, "${authToken}")
+      .header(HttpHeaderNames.ContentType, "application/json")
       .body(StringBody(InitRequest().asJsonString()))
       .check(status is 200)
       .check(jsonPath("$.journeyId").saveAs("journeyId"))
@@ -40,7 +40,7 @@ object APIServiceRequests extends ServicesConfiguration {
   val getCompletedJourneyData: HttpRequestBuilder = {
     http("Collect journey data")
       .get(s"$bankAccountVerificationAPI/complete/$${journeyId}")
-      .header("Authorization", "${authToken}")
+      .header(HttpHeaderNames.Authorization, "${authToken}")
       .check(status is 200)
       .check(jsonPath("$").saveAs("response"))
   }

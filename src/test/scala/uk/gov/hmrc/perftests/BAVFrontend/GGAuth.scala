@@ -32,7 +32,7 @@ object GGAuth extends ServicesConfiguration {
   private val authStubUrl: String = baseUrlFor("auth-login-stub") + "/auth-login-stub/gg-sign-in"
 
   def saveBearerToken: CheckBuilder[HttpCheck, Response, Response, String] = {
-    header("Authorization").saveAs("authToken")
+    header(HttpHeaderNames.Authorization).saveAs("authToken")
   }
 
   def body: String = {
@@ -49,7 +49,7 @@ object GGAuth extends ServicesConfiguration {
   val apiAuthWithGovernmentGateway: HttpRequestBuilder =
     http("API auth with Government Gateway")
       .post(authAPILoginUrl)
-      .header("Content-Type", "application/json")
+      .header(HttpHeaderNames.ContentType, "application/json")
       .body(StringBody(body))
       .check(status.is(201))
       .check(saveBearerToken)
