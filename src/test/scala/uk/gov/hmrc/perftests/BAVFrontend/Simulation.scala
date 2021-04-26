@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.perftests.BAVFrontend
 
-import io.gatling.core.Predef.{feed, _}
+import io.gatling.core.Predef.{feed}
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 import uk.gov.hmrc.perftests.BAVFrontend.APIServiceRequests._
 import uk.gov.hmrc.perftests.BAVFrontend.FrontendServiceRequests._

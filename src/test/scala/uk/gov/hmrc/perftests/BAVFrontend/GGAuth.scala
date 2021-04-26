@@ -19,7 +19,7 @@ package uk.gov.hmrc.perftests.BAVFrontend
 import io.gatling.core.Predef._
 import io.gatling.core.check.CheckBuilder
 import io.gatling.http.Predef.{http, status, _}
-import io.gatling.http.check.HttpCheck
+import io.gatling.http.check.header.HttpHeaderCheckType
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.perftests.models.AuthRequest
@@ -31,7 +31,7 @@ object GGAuth extends ServicesConfiguration {
   private val authAPILoginUrl: String = baseUrlFor("auth-login-api") + "/government-gateway/session/login"
   private val authStubUrl: String = baseUrlFor("auth-login-stub") + "/auth-login-stub/gg-sign-in"
 
-  def saveBearerToken: CheckBuilder[HttpCheck, Response, Response, String] = {
+  def saveBearerToken: CheckBuilder[HttpHeaderCheckType, Response, String] = {
     header(HttpHeaderNames.Authorization).saveAs("authToken")
   }
 
