@@ -24,12 +24,14 @@ import uk.gov.hmrc.perftests.models.InitRequest
 
 object APIServiceRequests extends ServicesConfiguration {
 
+  private val userAgent = "bavfe-performance-tests"
   private val apiContextRoot = "/api"
   private val bankAccountVerificationAPI: String = baseUrlFor("bank-account-verification-frontend-api") + apiContextRoot
 
   val initializeJourneyPage: HttpRequestBuilder = {
     http("Initialise journey")
-      .post(s"$bankAccountVerificationAPI/init")
+      .post(s"$bankAccountVerificationAPI/v2/init")
+      .header(HttpHeaderNames.UserAgent, userAgent)
       .header(HttpHeaderNames.Authorization, "${authToken}")
       .header(HttpHeaderNames.ContentType, "application/json")
       .body(StringBody(InitRequest().asJsonString()))
