@@ -35,7 +35,7 @@ object GGAuth extends ServicesConfiguration {
     header(HttpHeaderNames.Authorization).saveAs("authToken")
   }
 
-  def body: String = {
+  def authRequestPayload: String = {
     AuthRequest(
       "${credId}",
       AffinityGroup.Individual,
@@ -50,7 +50,7 @@ object GGAuth extends ServicesConfiguration {
     http("API auth with Government Gateway")
       .post(authAPILoginUrl)
       .header(HttpHeaderNames.ContentType, "application/json")
-      .body(StringBody(body))
+      .body(StringBody(authRequestPayload))
       .check(status.is(201))
       .check(saveBearerToken)
 
