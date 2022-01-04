@@ -27,7 +27,6 @@ First of all you will need to spin up an environment that can be tested locally 
 ```
 sm --start BANK_ACCOUNT_REPUTATION_STUB && sm --start BANK_ACCOUNT_VERIFICATION -r --appendArgs '{
   "BANK_ACCOUNT_REPUTATION": [
-    "-J-Dmicroservice.services.creditsafe.endpoint=http://localhost:9000/Match",
     "-J-Dmicroservice.services.callvalidate.endpoint=http://localhost:9000/callvalidateapi",
     "-J-Dmicroservice.services.surepay.hostname=http://localhost:9000/surepay/",
     "-J-Dmicroservice.services.surepay.enabled=true",
