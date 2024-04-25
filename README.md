@@ -32,7 +32,7 @@ sm --start BANK_ACCOUNT_REPUTATION_STUB && sm --start BANK_ACCOUNT_VERIFICATION 
     "-J-Dmicroservice.services.surepay.enabled=true",
     "-J-DDev.auditing.consumer.baseUri.port=9000",
     "-J-DDev.auditing.consumer.baseUri.host=localhost",
-    "-J-DDev.auditing.enabled=true",
+    "-J-DDev.auditing.enabled=false",
     "-J-DProd.proxy.proxyRequiredForThisEnvironment=false",
     "-J-Dmicroservice.services.eiscd.aws.endpoint=http://localhost:8001",
     "-J-Dmicroservice.services.eiscd.aws.bucket=txm-dev-bacs-eiscd",
@@ -42,7 +42,6 @@ sm --start BANK_ACCOUNT_REPUTATION_STUB && sm --start BANK_ACCOUNT_VERIFICATION 
     "-J-Dmicroservice.services.modcheck.aws.bucket=txm-dev-bacs-modcheck",
     "-J-Dmicroservice.services.modcheck.aws.accesskeyid=AKIAIOSFODNN7EXAMPLE",
     "-J-Dmicroservice.services.modcheck.aws.secretkey=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
-    "-J-DDev.auditing.enabled=true",
     "-J-Dmicroservice.services.thirdPartyCache.endpoint=http://localhost:9899/cache",
     "-J-Dmicroservice.services.surepay.cache.enabled=true"
   ],
@@ -50,10 +49,11 @@ sm --start BANK_ACCOUNT_REPUTATION_STUB && sm --start BANK_ACCOUNT_VERIFICATION 
     "-J-Dcontrollers.confidenceLevel.uk.gov.hmrc.bankaccountreputationthirdpartycache.controllers.CacheController.needsLogging=true"
   ],
   "BANK_ACCOUNT_VERIFICATION_FRONTEND": [
-    "-J-Dbankaccountreputation.validateBankDetails.url=http://localhost:9871/v2/validateBankDetails",
+    "-J-Dmicroservice.services.bank-account-reputation.url=http://localhost:9871/v2/validateBankDetails",
     "-J-Dauditing.consumer.baseUri.port=9000",
     "-J-Dauditing.consumer.baseUri.host=localhost",
-    "-J-Dauditing.enabled=true"
+    "-J-Dauditing.enabled=false",
+    "-J-Dmicroservice.services.access-control.enabled=false"
   ]
 }
 '

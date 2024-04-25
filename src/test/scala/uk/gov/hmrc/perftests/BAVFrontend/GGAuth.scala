@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ object GGAuth extends ServicesConfiguration {
       "${credId}",
       AffinityGroup.Individual,
       Some(ConfidenceLevel.L50),
-      CredentialStrength.Weak,
+      CredentialStrength.Strong,
       Some(CredentialRole.User),
       List.empty[Enrolment]
     ).asJsonString()
@@ -59,7 +59,7 @@ object GGAuth extends ServicesConfiguration {
       .post(authStubUrl)
       .formParam("authorityId", "${credId}")
       .formParam("redirectionUrl", s"$bankAccountVerificationURL/start/$${journeyId}")
-      .formParam("credentialStrength", s"${CredentialStrength.Weak.name}")
+      .formParam("credentialStrength", s"${CredentialStrength.Strong.name}")
       .formParam("confidenceLevel", s"${ConfidenceLevel.L50.level}")
       .formParam("affinityGroup", s"${AffinityGroup.Individual}")
       .check(status.is(303))
