@@ -3,12 +3,11 @@ lazy val root = (project in file("."))
   .enablePlugins(CorePlugin)
   .enablePlugins(JvmPlugin)
   .enablePlugins(IvyPlugin)
-  .enablePlugins(SbtAutoBuildPlugin)
   .settings(
     organization := "uk.gov.hmrc",
     name := "bank-account-verification-performance-tests",
     version := "0.1.0",
-    scalaVersion := "2.13.10",
+    scalaVersion := "2.13.16",
     scalacOptions ++= Seq("-feature", "-language:implicitConversions", "-language:postfixOps"),
     retrieveManaged := true,
     initialCommands in console := "import uk.gov.hmrc._",
