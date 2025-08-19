@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 
-SMOKE_TEST=true
-FULL=$1
+SMOKE_TEST=${1:-true}
 
-if [ -z "$FULL" ]; then
-  echo "boolean value not set, defaulting to Smoke Test: $SMOKE_TEST"
-  echo ""
-fi
-
-sbt -Dperftest.runSmokeTest=${FULL:=$SMOKE_TEST} -DrunLocal=true gatling:test
+sbt -Dperftest.runSmokeTest=${SMOKE_TEST} -DrunLocal=true gatling:test \
+ -DjourneysToRun.0=bank-account-verification-frontend-personal-stubbed \
+ -DjourneysToRun.1=bank-account-verification-frontend-business-stubbed

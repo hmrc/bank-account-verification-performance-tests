@@ -31,13 +31,13 @@ object GGAuth extends ServicesConfiguration {
   private val authAPILoginUrl: String = baseUrlFor("auth-login-api") + "/government-gateway/session/login"
   private val authStubUrl: String = baseUrlFor("auth-login-stub") + "/auth-login-stub/gg-sign-in"
 
-  def saveBearerToken: CheckBuilder[HttpHeaderCheckType, Response, String] = {
+  def saveBearerToken: CheckBuilder.Final[HttpHeaderCheckType, Response] = {
     header(HttpHeaderNames.Authorization).saveAs("authToken")
   }
 
   def authRequestPayload: String = {
     AuthRequest(
-      "${credId}",
+      "#{credId}",
       AffinityGroup.Individual,
       Some(ConfidenceLevel.L50),
       CredentialStrength.Strong,
@@ -54,11 +54,19 @@ object GGAuth extends ServicesConfiguration {
       .check(status.is(201))
       .check(saveBearerToken)
 
-  val frontendAuthWithGovernmentGateway: HttpRequestBuilder = {
+  val getFrontendAuthWithGovernmentGateway: HttpRequestBuilder = {
+    http("Website auth with Government Gateway")
+      .get(authStubUrl)
+      .check(css("input[name=csrfToken]", "value").saveAs("csrfToken"))
+      .check(status.is(200))
+  }
+
+  val postFrontendAuthWithGovernmentGateway: HttpRequestBuilder = {
     http("Website auth with Government Gateway")
       .post(authStubUrl)
-      .formParam("authorityId", "${credId}")
-      .formParam("redirectionUrl", s"$bankAccountVerificationURL/start/$${journeyId}")
+      .formParam("csrfToken", "#{csrfToken}")
+      .formParam("authorityId", "#{credId}")
+      .formParam("redirectionUrl", s"$bankAccountVerificationURL/start/#{journeyId}")
       .formParam("credentialStrength", s"${CredentialStrength.Strong.name}")
       .formParam("confidenceLevel", s"${ConfidenceLevel.L50.level}")
       .formParam("affinityGroup", s"${AffinityGroup.Individual}")
