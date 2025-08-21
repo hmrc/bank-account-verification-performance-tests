@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.perftests.BAVFrontend
 
-import io.gatling.core.Predef.{feed}
+import io.gatling.core.Predef.feed
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 import uk.gov.hmrc.perftests.BAVFrontend.APIServiceRequests._
 import uk.gov.hmrc.perftests.BAVFrontend.FrontendServiceRequests._
-import uk.gov.hmrc.perftests.BAVFrontend.GGAuth.{apiAuthWithGovernmentGateway, frontendAuthWithGovernmentGateway}
+import uk.gov.hmrc.perftests.BAVFrontend.GGAuth.{apiAuthWithGovernmentGateway, getFrontendAuthWithGovernmentGateway, postFrontendAuthWithGovernmentGateway}
 import uk.gov.hmrc.perftests.feeders.CustomFeeders
 
 class Simulation extends PerformanceTestRunner {
@@ -30,7 +30,8 @@ class Simulation extends PerformanceTestRunner {
     .withRequests(
       apiAuthWithGovernmentGateway,
       initializeJourneyPage,
-      frontendAuthWithGovernmentGateway,
+      getFrontendAuthWithGovernmentGateway,
+      postFrontendAuthWithGovernmentGateway,
       startJourney,
       selectPersonalAccountType,
       verifyPersonalAccountDetails,
@@ -42,7 +43,8 @@ class Simulation extends PerformanceTestRunner {
     .withRequests(
       apiAuthWithGovernmentGateway,
       initializeJourneyPage,
-      frontendAuthWithGovernmentGateway,
+      getFrontendAuthWithGovernmentGateway,
+      postFrontendAuthWithGovernmentGateway,
       startJourney,
       selectBusinessAccountType,
       verifyBusinessAccountDetails,
