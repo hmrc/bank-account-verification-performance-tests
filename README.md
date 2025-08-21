@@ -12,27 +12,21 @@ This code is open source software licensed under the [Apache 2.0 License]("http:
 ### Smoke test
 
 To run one journey with one user
-```
-sbt -Dperftest.runSmokeTest=true -DrunLocal=true gatling:test
+```shell
+  sbt -Dperftest.runSmokeTest=true -DrunLocal=true gatling:test
 ```
 
 ### Run the performance test (Default)
-```
-sbt gatling:test
+```shell
+  sbt gatling:test
 ```
 ## Running locally
 
 When running locally, the `bank-account-reputation-stub` is used to simulate BARS responses. In staging, this will use the proper service and separate test data.
 
-First of all you will need to spin up an environment that can be tested locally using the following:
-
-```
-sm2 --start BANK_ACCOUNT_REPUTATION_STUB && sm --start BANK_ACCOUNT_VERIFICATION --appendArgs '{
-  "BANK_ACCOUNT_VERIFICATION_FRONTEND": [
-    "-J-Dmicroservice.services.access-control.enabled=false"
-  ]
-}
-'
+First of all you will need to spin up an environment that can be tested locally using the following script:
+```shell
+    ./start_services.sh
 ```
 
 **Note:** sm2 will say that `BANK_ACCOUNT_REPUTATION` failed to start. This is expected, because locally we use `bank-account-reputation-stub` instead of the real service.
