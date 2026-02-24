@@ -3,9 +3,16 @@
 
 Performance test repository fo the bank-account-verification services
 
-## License
+### Current Volumetrics (JPS config)
 
-This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
+> Last checked/updated: **2026-02-24**
+>
+> Based on a profile of the service in production over the past year, the max requests/minute is ~20.
+
+The following configuration of journeys per second (JPS) results in around ~400 requests/minute, which is a good level for testing the performance of the service without overwhelming it. It also provides us with more than enough headroom.
+
+- Business Verification: **0.8 JPS**
+- Personal Verification: **0.5 JPS**
    
 ## Running tests   
     
@@ -33,3 +40,7 @@ First of all you will need to spin up an environment that can be tested locally 
 
 Then to run the tests, you need to use the `./run-local.sh` script. This is important, as it specifies separate local journeys which use separate feeder files for the test data.
 
+
+## License
+
+This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
