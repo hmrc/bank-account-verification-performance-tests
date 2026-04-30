@@ -18,6 +18,8 @@ package uk.gov.hmrc.perftests.BAVFrontend
 
 import io.gatling.core.Predef._
 import io.gatling.core.check.CheckBuilder
+import io.gatling.core.session.Expression
+import io.gatling.commons.validation._
 import io.gatling.http.Predef.{http, status, _}
 import io.gatling.http.check.header.HttpHeaderCheckType
 import io.gatling.http.request.builder.HttpRequestBuilder
@@ -61,15 +63,18 @@ object GGAuth extends ServicesConfiguration {
       .check(status.is(200))
   }
 
+  private def sessionString(name: String): Expression[Any] = session => session(name).as[String].success
+  private def paramValue(value: String): Expression[Any] = _ => value.success
+
   val postFrontendAuthWithGovernmentGateway: HttpRequestBuilder = {
     http("Website auth with Government Gateway")
       .post(authStubUrl)
-      .formParam("csrfToken", "#{csrfToken}")
-      .formParam("authorityId", "#{credId}")
-      .formParam("redirectionUrl", s"$bankAccountVerificationURL/start/#{journeyId}")
-      .formParam("credentialStrength", s"${CredentialStrength.Strong.name}")
-      .formParam("confidenceLevel", s"${ConfidenceLevel.L50.level}")
-      .formParam("affinityGroup", s"${AffinityGroup.Individual}")
+      .formParam("csrfToken", sessionString("csrfToken"))
+      .formParam("authorityId", sessionString("credId"))
+      .formParam("redirectionUrl", paramValue(s"$bankAccountVerificationURL/start/#{journeyId}"))
+      .formParam("credentialStrength", paramValue(s"${CredentialStrength.Strong.name}"))
+      .formParam("confidenceLevel", paramValue(s"${ConfidenceLevel.L50.level}"))
+      .formParam("affinityGroup", paramValue(s"${AffinityGroup.Individual}"))
       .check(status.is(303))
   }
 }
